@@ -1,1 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Joke API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            text-align: center;
+            padding: 20px;
+        }
+        #joke-container {
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #444;
+            border-radius: 10px;
+            background-color: #1e1e1e;
+            max-width: 700px;
+        }
+        #joke {
+            font-size: 2em; /* Larger font size for the joke */
+            margin-bottom: 20px;
+        }
+        #json-output {
+            font-size: 1.2em; /* Font size for the raw JSON response */
+            background-color: #333;
+            color: #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: left;
+            margin-top: 20px;
+            overflow-x: auto;
+            white-space: pre-wrap; /* Ensures JSON wraps within the container */
+        }
+        button {
+            margin-top: 20px;
+            padding: 15px 30px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2em; /* Larger button font size */
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div id="joke-container">
+        <div id="joke">Loading joke...</div>
+        <button id="new-joke">Get New Joke</button>
+        <pre id="json-output"></pre>
+    </div>
 
+    <script>
+        const jokeElement = document.getElementById('joke');
+        const jsonOutputElement = document.getElementById('json-output');
+        const newJokeButton = document.getElementById('new-joke');
+
+        async function fetchJoke() {
+            try {
+                const response = await fetch('/api/joke');
+                const data = await response.json();
+
+                if (data.success) {
+                    // Display the joke
+                    jokeElement.textContent = data.joke;
+                } else {
+                    jokeElement.textContent = "Failed to load joke.";
+                }
+
+                // Pretty-print the JSON response
+                jsonOutputElement.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                console.error('Error fetching joke:', error);
+                jokeElement.textContent = "An error occurred.";
+                jsonOutputElement.textContent = `Error: ${error.message}`;
+            }
+        }
+
+        // Fetch a new joke when the page loads
+        fetchJoke();
+
+        // Fetch a new joke on button click
+        newJokeButton.addEventListener('click', fetchJoke);
+    </script>
+</body>
+</html>

@@ -9,10 +9,12 @@
   "author": "BLUE-DEMON",
   "license": "ISC",
   "description": "",
-    "dependencies": {
-      "express": "^4.17.1",
-      "cors": "^2.8.5",
-      "yt-search": "^2.10.3",
-      "javascript-obfuscator": "^4.0.0"    
-      }
+  "dependencies": {
+    "express": "^4.17.1",
+    "cors": "^2.8.5",
+    "yt-search": "^2.10.3",
+    "@distube/ytdl-core": "^4.15.8",
+    "javascript-obfuscator": "^4.0.0"
+  }
 }
+

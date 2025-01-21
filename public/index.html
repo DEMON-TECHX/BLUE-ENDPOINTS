@@ -4,82 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>API Explorer</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #0d1117;
-            color: #c9d1d9;
-            text-align: center;
-            margin: 0;
-            padding: 20px;
-        }
-        #api-container {
-            margin: 50px auto;
-            padding: 20px;
-            border: 1px solid #30363d;
-            border-radius: 10px;
-            background-color: #161b22;
-            max-width: 800px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-        }
-        h1 {
-            color: #58a6ff;
-        }
-        select, input, button {
-            margin-top: 15px;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            font-size: 1em;
-        }
-        select, input {
-            background-color: #21262d;
-            color: #c9d1d9;
-        }
-        button {
-            background-color: #238636;
-            color: white;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #2ea043;
-        }
-        #result-container {
-            margin-top: 30px;
-            text-align: left;
-        }
-        .result-title {
-            font-size: 1.2em;
-            margin-bottom: 10px;
-            color: #58a6ff;
-        }
-        .result-content {
-            background-color: #21262d;
-            padding: 15px;
-            border-radius: 5px;
-            font-size: 1em;
-            line-height: 1.5em;
-        }
-        .result-content pre {
-            background-color: #0d1117;
-            padding: 10px;
-            border-radius: 5px;
-            overflow-x: auto;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-    </style>
+    <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
     <div id="api-container">
-        <h1>API Explorer</h1>
+        <h1>BLUE REST API</h1>
         <p>Choose an API and explore its features:</p>
         <select id="api-select">
-            <option value="/api/joke">Joke</option>
-            <option value="/api/quote">Quote</option>
-            <option value="/api/rizz">Rizz</option>
-            <option value="/api/obfuscate">Obfuscate</option>
-            <option value="/api/youtube-search">YouTube Search</option>
+            <option value="joke">Joke</option>
+            <option value="quote">Quote</option>
+            <option value="rizz">Rizz</option>
+            <option value="obfuscate">Obfuscate</option>
+            <option value="youtube-search">YouTube Search</option>
+            <option value="youtube-download">YouTube Download</option>
         </select>
         <input id="api-input" type="text" placeholder="Enter query (if required)" style="display: none;">
         <button id="fetch-data">Fetch Data</button>
@@ -90,88 +27,7 @@
         </div>
     </div>
 
-    <script>
-        const apiSelect = document.getElementById('api-select');
-        const fetchDataButton = document.getElementById('fetch-data');
-        const apiInput = document.getElementById('api-input');
-        const resultContainer = document.getElementById('result-container');
-        const resultTitle = document.getElementById('result-title');
-        const resultContent = document.getElementById('result-content');
-
-        apiSelect.addEventListener('change', () => {
-            const selectedApi = apiSelect.value;
-            if (selectedApi === '/api/obfuscate' || selectedApi === '/api/youtube-search') {
-                apiInput.style.display = 'inline-block';
-                apiInput.placeholder = selectedApi === '/api/obfuscate' 
-                    ? 'Enter JavaScript code to obfuscate' 
-                    : 'Enter YouTube search query';
-            } else {
-                apiInput.style.display = 'none';
-            }
-        });
-
-        async function fetchData() {
-            const selectedApi = apiSelect.value;
-            const inputValue = apiInput.value.trim();
-            let url = selectedApi;
-
-            if (selectedApi === '/api/obfuscate') {
-                if (!inputValue) {
-                    alert("Please provide JavaScript code to obfuscate.");
-                    return;
-                }
-                url += `?code=${encodeURIComponent(inputValue)}`;
-            } else if (selectedApi === '/api/youtube-search') {
-                if (!inputValue) {
-                    alert("Please provide a YouTube search query.");
-                    return;
-                }
-                url += `?q=${encodeURIComponent(inputValue)}`;
-            }
-
-            try {
-                const response = await fetch(url);
-                const data = await response.json();
-
-                resultContainer.style.display = 'block';
-
-                if (selectedApi === '/api/joke') {
-                    resultTitle.textContent = "Random Joke:";
-                    resultContent.textContent = data.joke || "No joke available.";
-                } else if (selectedApi === '/api/quote') {
-                    resultTitle.textContent = "Random Quote:";
-                    resultContent.textContent = `${data.quote} - ${data.Author}`;
-                } else if (selectedApi === '/api/rizz') {
-                    resultTitle.textContent = "Random Rizz:";
-                    resultContent.textContent = data.rizz || "No rizz available.";
-                } else if (selectedApi === '/api/obfuscate') {
-                    resultTitle.textContent = "Obfuscated Code:";
-                    resultContent.innerHTML = `<pre>${data["Obf-code"] || "No code available."}</pre>`;
-                } else if (selectedApi === '/api/youtube-search') {
-                    resultTitle.textContent = "YouTube Search Results:";
-                    resultContent.innerHTML = data.results.map(video => `
-                        <div>
-                            <strong>${video.title}</strong><br>
-                            <a href="${video.url}" target="_blank">${video.url}</a><br>
-                            Duration: ${video.duration}<br>
-                            Views: ${video.views}<br>
-                            Uploaded: ${video.uploaded}<br>
-                            Channel: <a href="${video.channel.url}" target="_blank">${video.channel.name}</a>
-                        </div>
-                        <hr>
-                    `).join('');
-                } else {
-                    resultTitle.textContent = "Result:";
-                    resultContent.textContent = "No valid data returned.";
-                }
-            } catch (error) {
-                resultContainer.style.display = 'block';
-                resultTitle.textContent = "Error:";
-                resultContent.textContent = `An error occurred: ${error.message}`;
-            }
-        }
-
-        fetchDataButton.addEventListener('click', fetchData);
-    </script>
+    <script src="/script.js"></script>
 </body>
 </html>
+

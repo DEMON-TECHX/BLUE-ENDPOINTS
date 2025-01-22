@@ -173,7 +173,7 @@ app.get("/api/joke", (req, res) => {
   })
 })
 
-app.get("/api/obfuscate", (req, res) => {
+app.get("/api/obf", (req, res) => {
   updateRequestCount("obfuscate")
   const code = req.query.code
 
@@ -233,7 +233,7 @@ app.get("/api/obfuscate", (req, res) => {
   }
 })
 
-app.get("/api/youtube-search", async (req, res) => {
+app.get("/api/yts", async (req, res) => {
   updateRequestCount("youtube-search")
   const query = req.query.q
 
@@ -297,7 +297,7 @@ app.get("/api/youtube-search", async (req, res) => {
   }
 })
 
-app.get("/api/youtube-download", async (req, res) => {
+app.get("/api/ytdl", async (req, res) => {
   updateRequestCount("youtube-download")
   const url = req.query.url
 

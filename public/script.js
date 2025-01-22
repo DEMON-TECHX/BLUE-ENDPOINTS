@@ -7,14 +7,24 @@ const resultContent = document.getElementById("result-content")
 
 apiSelect.addEventListener("change", () => {
   const selectedApi = apiSelect.value
-  if (selectedApi === "obf" || selectedApi === "yts" || selectedApi === "ytdl") {
+  if (
+    selectedApi === "obf" ||
+    selectedApi === "yts" ||
+    selectedApi === "ytdl" ||
+    selectedApi === "lyrics" ||
+    selectedApi === "tiktok"
+  ) {
     apiInput.style.display = "inline-block"
     apiInput.placeholder =
       selectedApi === "obf"
         ? "Enter JavaScript code to obfuscate"
         : selectedApi === "yts"
           ? "Enter YouTube search query"
-          : "Enter YouTube video URL"
+          : selectedApi === "ytdl"
+            ? "Enter YouTube video URL"
+            : selectedApi === "lyrics"
+              ? "Enter song title and artist"
+              : "Enter TikTok video URL"
   } else {
     apiInput.style.display = "none"
   }
@@ -43,10 +53,23 @@ async function fetchData() {
       return
     }
     url += `?url=${encodeURIComponent(inputValue)}`
+  } else if (selectedApi === "lyrics") {
+    if (!inputValue) {
+      alert("Please provide a song title and artist.")
+      return
+    }
+    url += `?q=${encodeURIComponent(inputValue)}`
+  } else if (selectedApi === "tiktok") {
+    if (!inputValue) {
+      alert("Please provide a TikTok video URL.")
+      return
+    }
+    url += `?url=${encodeURIComponent(inputValue)}`
   }
 
   try {
     const response = await fetch(url)
+
     const data = await response.json()
 
     resultContainer.style.display = "block"
@@ -93,6 +116,20 @@ async function fetchData() {
           <a href="${data.downloadUrl}" target="_blank">Download Video</a><br>
           Format: ${data.format}<br>
           Quality: ${data.quality}
+        `
+        break
+      case "lyrics":
+        resultTitle.textContent = "Song Lyrics:"
+        resultContent.innerHTML = `<pre>${data.lyrics || "Lyrics not found."}</pre>`
+        break
+      case "tiktok":
+        resultTitle.textContent = "TikTok Video Information:"
+        resultContent.innerHTML = `
+          <strong>${data.title}</strong><br>
+          Author: ${data.author}<br>
+          <a href="${data.downloadUrl}" target="_blank">Download Video</a><br>
+          <img src="${data.cover}" alt="Video Thumbnail" style="max-width: 200px;"><br>
+          Music: ${data.musicTitle} by ${data.musicAuthor}
         `
         break
       default:

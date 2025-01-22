@@ -7,12 +7,12 @@ const resultContent = document.getElementById("result-content")
 
 apiSelect.addEventListener("change", () => {
   const selectedApi = apiSelect.value
-  if (selectedApi === "obfuscate" || selectedApi === "youtube-search" || selectedApi === "youtube-download") {
+  if (selectedApi === "obf" || selectedApi === "yts" || selectedApi === "ytdl") {
     apiInput.style.display = "inline-block"
     apiInput.placeholder =
-      selectedApi === "obfuscate"
+      selectedApi === "obf"
         ? "Enter JavaScript code to obfuscate"
-        : selectedApi === "youtube-search"
+        : selectedApi === "yts"
           ? "Enter YouTube search query"
           : "Enter YouTube video URL"
   } else {
@@ -25,19 +25,19 @@ async function fetchData() {
   const inputValue = apiInput.value.trim()
   let url = `/api/${selectedApi}`
 
-  if (selectedApi === "obfuscate") {
+  if (selectedApi === "obf") {
     if (!inputValue) {
       alert("Please provide JavaScript code to obfuscate.")
       return
     }
     url += `?code=${encodeURIComponent(inputValue)}`
-  } else if (selectedApi === "youtube-search") {
+  } else if (selectedApi === "yts") {
     if (!inputValue) {
       alert("Please provide a YouTube search query.")
       return
     }
     url += `?q=${encodeURIComponent(inputValue)}`
-  } else if (selectedApi === "youtube-download") {
+  } else if (selectedApi === "ytdl") {
     if (!inputValue) {
       alert("Please provide a YouTube video URL.")
       return
@@ -64,36 +64,36 @@ async function fetchData() {
         resultTitle.textContent = "Random Rizz:"
         resultContent.textContent = data.rizz || "No rizz available."
         break
-      case "obfuscate":
+      case "obf":
         resultTitle.textContent = "Obfuscated Code:"
         resultContent.innerHTML = `<pre>${data["Obf-code"] || "No code available."}</pre>`
         break
-      case "youtube-search":
+      case "yts":
         resultTitle.textContent = "YouTube Search Results:"
         resultContent.innerHTML = data.results
           .map(
             (video) => `
-                    <div>
-                        <strong>${video.title}</strong><br>
-                        <a href="${video.url}" target="_blank">${video.url}</a><br>
-                        Duration: ${video.duration}<br>
-                        Views: ${video.views}<br>
-                        Uploaded: ${video.uploaded}<br>
-                        Channel: <a href="${video.channel.url}" target="_blank">${video.channel.name}</a>
-                    </div>
-                    <hr>
-                `,
+              <div>
+                <strong>${video.title}</strong><br>
+                <a href="${video.url}" target="_blank">${video.url}</a><br>
+                Duration: ${video.duration}<br>
+                Views: ${video.views}<br>
+                Uploaded: ${video.uploaded}<br>
+                Channel: <a href="${video.channel.url}" target="_blank">${video.channel.name}</a>
+              </div>
+              <hr>
+            `,
           )
           .join("")
         break
-      case "youtube-download":
+      case "ytdl":
         resultTitle.textContent = "YouTube Download Link:"
         resultContent.innerHTML = `
-                    <strong>${data.title}</strong><br>
-                    <a href="${data.downloadUrl}" target="_blank">Download Video</a><br>
-                    Format: ${data.format}<br>
-                    Quality: ${data.quality}
-                `
+          <strong>${data.title}</strong><br>
+          <a href="${data.downloadUrl}" target="_blank">Download Video</a><br>
+          Format: ${data.format}<br>
+          Quality: ${data.quality}
+        `
         break
       default:
         resultTitle.textContent = "Result:"

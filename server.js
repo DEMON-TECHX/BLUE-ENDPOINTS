@@ -8,6 +8,10 @@ const ytdl = require("@distube/ytdl-core")
 const getLyrics = require("@faouzkk/lyrics-finder")
 const TikTokScraper = require("tiktok-scraper")
 
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
 const app = express()
 const PORT = 7860
 
@@ -314,6 +318,7 @@ app.get("/api/ytdl", async (req, res) => {
   }
 
   try {
+    await delay(7000)
     const info = await ytdl.getInfo(url)
     const format = ytdl.chooseFormat(info.formats, { quality: "highest" })
 
@@ -400,6 +405,7 @@ app.get("/api/tiktok", async (req, res) => {
   }
 
   try {
+    await delay(7000)
     const videoMeta = await TikTokScraper.getVideoMeta(url)
 
     if (!videoMeta || !videoMeta.collector || videoMeta.collector.length === 0) {

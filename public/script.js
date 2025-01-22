@@ -68,11 +68,12 @@ async function fetchData() {
   }
 
   try {
-    const response = await fetch(url)
-
-    const data = await response.json()
-
     resultContainer.style.display = "block"
+    resultTitle.textContent = "Processing..."
+    resultContent.textContent = "Please wait while we fetch the data..."
+
+    const response = await fetch(url)
+    const data = await response.json()
 
     switch (selectedApi) {
       case "joke":

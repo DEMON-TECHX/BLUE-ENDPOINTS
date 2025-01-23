@@ -1,14 +1,11 @@
 {
-  "name": "BLUE-ENDPOINTS",
+  "name": "BLUE-WEB-SERVER",
   "version": "1.0.0",
+  "description": "Web application for deploying and managing projects",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-  "author": "BLUE-DEMON",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
     "express": "^4.17.1",
     "cors": "^2.8.5",
@@ -19,4 +16,3 @@
     "@faouzkk/lyrics-finder": "^1.0.3"
   }
 }
-
